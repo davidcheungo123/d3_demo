@@ -36,3 +36,45 @@
     transform: rotate(360deg);
   }
 }
+
+
+
+#world {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+
+#svg {
+  width: 600px;
+  height: 600px;
+  margin: 0 auto;
+  display: block;
+}
+
+
+#tooltip {
+  opacity: 0;
+  position: absolute;
+  padding: 10px;
+  background: #ffffff;
+  border: 2px solid #e8e8e8;
+  color: #33cc99;
+  font-size: 14px;
+  border-radius: 4px;
+  width : 150px;
+  height : 150px
+}
+
+#container {
+  display : flex
+}
+
+
+@media screen and (max-width: 800px) {
+  #container {
+    display : block
+  }
+
+}
