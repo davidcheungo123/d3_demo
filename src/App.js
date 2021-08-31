@@ -1,12 +1,15 @@
 import React, { useEffect, useState, useRef } from 'react';
-import * as d3 from 'd3';
-import * as geo from 'd3-geo'
+// import * as d3 from 'd3';
+// import * as geo from 'd3-geo'
 
 import "./App.css"
 
 function App() {
 
   const world_map = useRef()
+
+
+  console.log(window.window)
 
   const [countries, setCountries] = useState(null)
   const [data, setData] = useState(null)
@@ -24,13 +27,13 @@ function App() {
 
   const BOXSIZE = 30
 
-  const svg = d3.select("#svg1")
+  const svg = window.window.d3.select("#svg1")
     .attr("height", dimensions.height)
     .attr("width", 800)
     .attr('transform', `translate(${dimensions.marginLeft},${dimensions.marginTop})`)
 
 
-  const tooltip = d3.select('#tooltip');
+  const tooltip = window.window.d3.select('#tooltip');
 
 
 
@@ -49,14 +52,14 @@ function App() {
     const yData = Object.values(copiedData)
     console.log(yData)
 
-    const xScale = d3.scaleBand().domain(["2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020"]).range([0, dimensions.ctrWidth])
-    const xScaleIndex = d3.scaleBand().domain([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]).range([0, dimensions.ctrWidth])
-    const yScale = d3.scaleLinear().domain([0, d3.max(yData)]).range([dimensions.ctrHeight, 0])
-    const invertyScale = d3.scaleLinear().domain([0, d3.max(yData)]).range([0, dimensions.ctrHeight])
+    const xScale = window.window.d3.scaleBand().domain(["2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020"]).range([0, dimensions.ctrWidth])
+    const xScaleIndex = window.window.d3.scaleBand().domain([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]).range([0, dimensions.ctrWidth])
+    const yScale = window.window.d3.scaleLinear().domain([0, window.window.d3.max(yData)]).range([dimensions.ctrHeight, 0])
+    const invertyScale = window.window.d3.scaleLinear().domain([0, window.window.d3.max(yData)]).range([0, dimensions.ctrHeight])
 
 
-    const xAxis = d3.axisBottom(xScale)
-    const yAxis = d3.axisLeft(yScale)
+    const xAxis = window.window.d3.axisBottom(xScale)
+    const yAxis = window.window.d3.axisLeft(yScale)
     const xAxisGroup = svg.append("g").call(xAxis).style("transform", `translate(${110}px,${dimensions.ctrHeight}px)`)
     const yAxisGroup = svg.append("g").call(yAxis).style("transform", `translate(${110}px, ${0}px)`)
 
@@ -94,14 +97,14 @@ function App() {
 
     let yData = Object.values(copiedData)
 
-    const xScale = d3.scaleBand().domain(["2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020"]).range([0, dimensions.ctrWidth])
-    const xScaleIndex = d3.scaleBand().domain([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]).range([0, dimensions.ctrWidth])
-    const yScale = d3.scaleLinear().domain([0, d3.max(yData)]).range([dimensions.ctrHeight, 0])
-    const invertyScale = d3.scaleLinear().domain([0, d3.max(yData)]).range([0, dimensions.ctrHeight])
+    const xScale = window.window.d3.scaleBand().domain(["2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020"]).range([0, dimensions.ctrWidth])
+    const xScaleIndex = window.window.d3.scaleBand().domain([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]).range([0, dimensions.ctrWidth])
+    const yScale = window.window.d3.scaleLinear().domain([0, window.window.d3.max(yData)]).range([dimensions.ctrHeight, 0])
+    const invertyScale = window.window.d3.scaleLinear().domain([0, window.window.d3.max(yData)]).range([0, dimensions.ctrHeight])
 
 
-    const xAxis = d3.axisBottom(xScale)
-    const yAxis = d3.axisLeft(yScale)
+    const xAxis = window.window.d3.axisBottom(xScale)
+    const yAxis = window.window.d3.axisLeft(yScale)
     const xAxisGroup = svg.append("g").call(xAxis).style("transform", `translate(${110}px,${dimensions.ctrHeight}px)`)
     const yAxisGroup = svg.append("g").call(yAxis).style("transform", `translate(${110}px, ${0}px)`)
 
@@ -135,7 +138,7 @@ function App() {
 
     const runningFunction = async () => {
 
-      const data = await d3.csv("population_info.csv", (info) => {
+      const data = await window.window.d3.csv("population_info.csv", (info) => {
         info = Object.entries(info)
         info = info.map((data) => {
           if (data[0].startsWith("Population")) {
@@ -153,7 +156,7 @@ function App() {
       })
 
 
-      let data_gross = await d3.csv("gross_china.csv" , (info) => {
+      let data_gross = await window.window.d3.csv("gross_china.csv" , (info) => {
         let parsedData = Object.entries(info)
         parsedData = parsedData.map((ele) => {
           if (ele[1].includes(",")) {
@@ -174,9 +177,9 @@ function App() {
 
       setData_gross(data_gross)
 
-      const data_geo = await d3.json('/chinaGeo.json');
+      const data_geo = await window.window.d3.json('/chinaGeo.json');
 
-      const projection = geo.geoMercator()
+      const projection = window.window.d3.geoMercator()
         .scale(550)
         .center([105, 38])
         .translate([dimensions.mapWidth / 2, dimensions.mapHeight / 2]);
@@ -184,17 +187,17 @@ function App() {
       console.log(data_geo.features)
 
 
-      const path = geo.geoPath(projection);
+      const path = window.window.d3.geoPath(projection);
 
-      const color = d3.quantize((t) => d3.interpolateOranges(t), data_geo["features"].length)
-      const colorScale = d3.scaleQuantize().domain(d3.extent(data, d => d["2020"])).range(color)
+      const color = window.window.d3.quantize((t) => window.window.d3.interpolateOranges(t), data_geo["features"].length)
+      const colorScale = window.window.d3.scaleQuantize().domain(window.window.d3.extent(data, d => d["2020"])).range(color)
 
       let places = data.map((d) => {
         return { name: d.Delegation, lat: parseFloat(d.lat), log: parseFloat(d.lng) }
       })
 
 
-      const svg_geo = d3.select("#svg")
+      const svg_geo = window.window.d3.select("#svg")
         .attr("width", dimensions.mapWidth)
         .attr("height", dimensions.mapHeight)
 
@@ -233,21 +236,21 @@ function App() {
   }, [])
 
 
-  d3.select("#metric").on('change', function (e) {
+  window.window.d3.select("#metric").on('change', function (e) {
     e.preventDefault()
     let specificData = data.find(datum => datum.Delegation === this.value)
     genBarChart(specificData)
   })
 
 
-  d3.select("#svg").selectAll('.location').on('touchmouse mousemove', function (d) {
+  window.window.d3.select("#svg").selectAll('.location').on('touchmouse mousemove', function (d) {
     let specificData = data.find(datum => datum.Delegation === d.target.__data__.name)
     d.stopPropagation();
     tooltip
       .style('left', d.x + 20 + 'px')
       .style('top', d.y + 'px')
       .style('opacity', 1);
-    d3.select(this).select('circle').transition()
+      window.window.d3.select(this).select('circle').transition()
       .duration(150)
       .attr('r', 8);
     tooltip.select("#country").text(`Country: ${d.target.__data__.name}`).style("color", "black")
@@ -256,7 +259,7 @@ function App() {
   }).on('mouseout', function (d) {
     d.stopPropagation();
     tooltip.style('opacity', 0);
-    d3.select(this)
+    window.window.d3.select(this)
       .select('circle')
       .transition()
       .duration(150)
